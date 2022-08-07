@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.carinfo.mapper.CarinfoMapper">
+    
+    <resultMap type="Carinfo" id="CarinfoResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="carNumber"    column="car_number"    />
+    </resultMap>
+
+    <sql id="selectCarinfoVo">
+        select id, create_time, update_time, del_flag, car_number from carinfo
+    </sql>
+
+    <select id="selectCarinfoList" parameterType="Carinfo" resultMap="CarinfoResult">
+        <include refid="selectCarinfoVo"/>
+        <where>
+            del_flag = 0
+            <if test="carNumber != null  and carNumber != ''"> and car_number = #{carNumber}</if>
+        </where>
+    </select>
+    
+    <select id="selectCarinfoById" parameterType="String" resultMap="CarinfoResult">
+        <include refid="selectCarinfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCarinfo" parameterType="Carinfo">
+        insert into carinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+            <if test="carNumber != null">car_number,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+            <if test="carNumber != null">#{carNumber},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCarinfo" parameterType="Carinfo">
+        update carinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="carNumber != null">car_number = #{carNumber},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="deleteCarinfoById" parameterType="String">
+        update carinfo set del_flag = 1 where id = #{id}
+    </update>
+
+    <update id="deleteCarinfoByIds" parameterType="String">
+        update carinfo set del_flag = 1 where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>

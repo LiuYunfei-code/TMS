@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.orderInfo.mapper.OrderBaseinfoMapper">
+    
+    <resultMap type="OrderBaseinfo" id="OrderBaseinfoResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="orderDate"    column="order_date"    />
+        <result property="carNumber"    column="car_number"    />
+        <result property="clientName"    column="client_name"    />
+        <result property="loadingPlace"    column="loading_place"    />
+        <result property="unloadingPlace"    column="unloading_place"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="freight"    column="freight"    />
+        <result property="remark"    column="remark"    />
+        <result property="unloadingTime"    column="unloading_time"    />
+        <result property="paymentTime"    column="payment_time"    />
+        <result property="driverName"    column="driver_name"    />
+        <result property="trips"    column="trips"    />
+        <result property="isMarked"    column="is_marked"    />
+    </resultMap>
+
+    <sql id="selectOrderBaseinfoVo">
+        select id, create_time, update_time, del_flag, order_date, car_number, client_name, loading_place, unloading_place, goods_name, freight, remark, unloading_time, payment_time, driver_name, trips, is_marked from baseinfo
+    </sql>
+
+    <select id="selectOrderBaseinfoList" parameterType="OrderBaseinfo" resultMap="OrderBaseinfoResult">
+        <include refid="selectOrderBaseinfoVo"/>
+        <where>
+            del_flag = 0
+            <if test="orderDate != null "> and order_date = #{orderDate}</if>
+            <if test="carNumber != null  and carNumber != ''"> and car_number = #{carNumber}</if>
+            <if test="clientName != null  and clientName != ''"> and client_name like concat('%', #{clientName}, '%')</if>
+            <if test="loadingPlace != null  and loadingPlace != ''"> and loading_place like concat('%', #{loadingPlace}, '%')</if>
+            <if test="unloadingPlace != null  and unloadingPlace != ''"> and unloading_place like concat('%', #{unloadingPlace}, '%')</if>
+            <if test="goodsName != null  and goodsName != ''"> and goods_name like concat('%', #{goodsName}, '%')</if>
+            <if test="freight != null "> and freight = #{freight}</if>
+            <if test="unloadingTime != null "> and unloading_time = #{unloadingTime}</if>
+            <if test="paymentTime != null "> and payment_time = #{paymentTime}</if>
+            <if test="driverName != null  and driverName != ''"> and driver_name like concat('%', #{driverName}, '%')</if>
+            <if test="trips != null "> and trips = #{trips}</if>
+            <if test="isMarked != null  and isMarked != ''"> and is_marked = #{isMarked}</if>
+            <if test="startDate != null  and startDate != ''"> and order_date >= #{startDate}</if>
+            <if test="endDate != null  and endDate != ''"> and order_date &lt;= #{endDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectOrderBaseinfoById" parameterType="String" resultMap="OrderBaseinfoResult">
+        <include refid="selectOrderBaseinfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOrderBaseinfo" parameterType="OrderBaseinfo">
+        insert into baseinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="orderDate != null">order_date,</if>
+            <if test="carNumber != null">car_number,</if>
+            <if test="clientName != null">client_name,</if>
+            <if test="loadingPlace != null">loading_place,</if>
+            <if test="unloadingPlace != null">unloading_place,</if>
+            <if test="goodsName != null">goods_name,</if>
+            <if test="freight != null">freight,</if>
+            <if test="remark != null">remark,</if>
+            <if test="unloadingTime != null">unloading_time,</if>
+            <if test="paymentTime != null">payment_time,</if>
+            <if test="driverName != null">driver_name,</if>
+            <if test="trips != null">trips,</if>
+            <if test="isMarked != null">is_marked,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="orderDate != null">#{orderDate},</if>
+            <if test="carNumber != null">#{carNumber},</if>
+            <if test="clientName != null">#{clientName},</if>
+            <if test="loadingPlace != null">#{loadingPlace},</if>
+            <if test="unloadingPlace != null">#{unloadingPlace},</if>
+            <if test="goodsName != null">#{goodsName},</if>
+            <if test="freight != null">#{freight},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="unloadingTime != null">#{unloadingTime},</if>
+            <if test="paymentTime != null">#{paymentTime},</if>
+            <if test="driverName != null">#{driverName},</if>
+            <if test="trips != null">#{trips},</if>
+            <if test="isMarked != null">#{isMarked},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrderBaseinfo" parameterType="OrderBaseinfo">
+        update baseinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="orderDate != null">order_date = #{orderDate},</if>
+            <if test="carNumber != null">car_number = #{carNumber},</if>
+            <if test="clientName != null">client_name = #{clientName},</if>
+            <if test="loadingPlace != null">loading_place = #{loadingPlace},</if>
+            <if test="unloadingPlace != null">unloading_place = #{unloadingPlace},</if>
+            <if test="goodsName != null">goods_name = #{goodsName},</if>
+            <if test="freight != null">freight = #{freight},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="unloadingTime != null">unloading_time = #{unloadingTime},</if>
+            <if test="paymentTime != null">payment_time = #{paymentTime},</if>
+            <if test="driverName != null">driver_name = #{driverName},</if>
+            <if test="trips != null">trips = #{trips},</if>
+            <if test="isMarked != null">is_marked = #{isMarked},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderBaseinfoById" parameterType="String">
+        update baseinfo set del_flag = 1 where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderBaseinfoByIds" parameterType="String">
+        update baseinfo set del_flag = 1 where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
