@@ -128,7 +128,7 @@ export default {
             title: '备份数据提醒',
             dangerouslyUseHTMLString: true,
             message: h('div', null, [
-              h('p', {style: 'color: red;'}, '请及时备份数据'),
+              h('p', {style: 'color: red;'}, '请及时备份数据。'),
               h('button', {
                 'class': 'backup-btn', on: {
                   click: () => {
@@ -174,7 +174,7 @@ export default {
           // 全部成功
           this.$notify({
             title: '成功',
-            message: '备份文件已下载，请妥善保管',
+            message: '备份文件已下载，请妥善保管。',
             type: 'success'
           });
           // 记录备份日志
