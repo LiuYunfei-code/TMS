@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BackupLogMapper">
+    
+    <resultMap type="BackupLog" id="BackupLogResult">
+        <result property="backupTime"    column="backup_time"    />
+        <result property="id"    column="id"    />
+    </resultMap>
+
+    <sql id="selectBackupLogVo">
+        select backup_time, id from backup_log
+    </sql>
+
+    <select id="selectBackupLogList" parameterType="BackupLog" resultMap="BackupLogResult">
+        <include refid="selectBackupLogVo"/>
+        <where>  
+            <if test="backupTime != null "> and backup_time = #{backupTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectBackupLogByBackupTime" parameterType="Date" resultMap="BackupLogResult">
+        <include refid="selectBackupLogVo"/>
+        where backup_time = #{backupTime}
+    </select>
+        
+    <insert id="insertBackupLog" parameterType="BackupLog">
+        insert into backup_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="backupTime != null">backup_time,</if>
+            <if test="id != null">id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="backupTime != null">#{backupTime},</if>
+            <if test="id != null">#{id},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBackupLog" parameterType="BackupLog">
+        update backup_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="id != null">id = #{id},</if>
+        </trim>
+        where backup_time = #{backupTime}
+    </update>
+
+    <delete id="deleteBackupLogByBackupTime" parameterType="Date">
+        delete from backup_log where backup_time = #{backupTime}
+    </delete>
+
+    <delete id="deleteBackupLogByBackupTimes" parameterType="String">
+        delete from backup_log where backup_time in 
+        <foreach item="backupTime" collection="array" open="(" separator="," close=")">
+            #{backupTime}
+        </foreach>
+    </delete>
+
+    <select id="getTableData" resultType="java.util.Map">
+        select * from ${table}
+    </select>
+</mapper>
